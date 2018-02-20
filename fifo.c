@@ -49,6 +49,18 @@ int getFromQueue(struct Queue **q){
     return result;
 }
 
+void deleteFromQueue(struct Queue **q){
+    if(*q == NULL){
+        return ;
+    }
+    
+    struct Queue *temp;
+    temp = (*q)->next;
+
+    free(*q);
+    *q = temp;
+}
+
 void printQueue(struct Queue *q){
     struct Queue *cur = q;
 
