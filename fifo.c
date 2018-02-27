@@ -57,6 +57,8 @@ int getFromQueue(struct Queue *q){
         q->tail = NULL;
     }
 
+    free(temp);
+
 
     return result;
 }
