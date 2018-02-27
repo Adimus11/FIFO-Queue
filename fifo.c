@@ -1,93 +1,78 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct Queue{
+struct Node{
+    struct Node *prev;
     int value;
-    struct Queue *next;
 };
 
-struct Queue *newQueue(int firstElement){
+struct Queue{
+    struct Node *tail;
+    struct Node *head;
+};
+
+struct Queue *newQueue(){
     struct Queue *q = malloc(sizeof(struct Queue));
-    q->next = NULL;
-    q->value = firstElement;
+    q->tail = NULL;
+    q->head = NULL;
 
     return q;
 }
 
-void addToQueue(int value, struct Queue *q){
-    if(q == NULL){
-        q = newQueue(value);
+void addToQueue(int nValue, struct Queue *q){
+    if(q->tail == NULL){
+
+        struct Node *newValue = malloc(sizeof(struct Node));
+
+        newValue->value = nValue;
+
+        newValue->prev = NULL;
+
+        q->tail = newValue;
+        q->head = newValue;
     }
     else{
-        struct Queue *cur = q;
+        struct Node *newValue = malloc(sizeof(struct Node));
+        newValue->value = nValue;
+        newValue->prev = NULL;
+        q->tail->prev = newValue;
+        q->tail = newValue;
 
-        while(cur->next != NULL){
-            cur = cur->next;
-        }
-
-        cur->next = malloc(sizeof(struct Queue));
-        cur->next->value = value;
-        cur->next->next = NULL;
     }
 }
 
-int getFromQueue(struct Queue **q){
+int getFromQueue(struct Queue *q){
 
-    if(*q == NULL){
+    if(q->head == NULL){
         printf("Queue empty, printing 0...\n");
         return 0;
     }
 
-    int result = (*q)->value;
-    struct Queue *temp;
-    temp = (*q)->next;
+    struct Node *temp = q->head;
 
-    free(*q);
-    *q = temp;
+    int result = temp->value;
+    q->head = temp->prev;
+
+    if(q->tail == temp){
+        q->tail = NULL;
+    }
 
 
     return result;
 }
 
-void deleteFromQueue(struct Queue **q){
-    if(*q == NULL){
-        return ;
-    }
-    
-    struct Queue *temp;
-    temp = (*q)->next;
-
-    free(*q);
-    *q = temp;
-}
-
-void printQueue(struct Queue *q){
-    struct Queue *cur = q;
-
-    printf("[ ");
-    while(cur->next != NULL){
-        printf("%d ,", cur->value);
-        cur = cur->next;
-    }
-
-    printf("%d ", cur->value);
-    printf("]\n");
-}
-
 int main(){
-    struct Queue *fifo = newQueue(6);
+    struct Queue *fifo = newQueue();
     addToQueue(7, fifo);
     addToQueue(9, fifo);
     addToQueue(11, fifo);
 
-    printQueue(fifo);
-
-    printf("%d \n", getFromQueue(&fifo));
-    printf("%d \n", getFromQueue(&fifo));
-    printf("%d \n", getFromQueue(&fifo));
-    printf("%d \n", getFromQueue(&fifo));
-    printf("%d \n", getFromQueue(&fifo));
-    printf("%d \n", getFromQueue(&fifo));
+    printf("%d \n", getFromQueue(fifo));
+    printf("%d \n", getFromQueue(fifo));
+    printf("%d \n", getFromQueue(fifo));
+    printf("%d \n", getFromQueue(fifo));
+    printf("%d \n", getFromQueue(fifo));
+    printf("%d \n", getFromQueue(fifo));
 
     return 0;
 }
