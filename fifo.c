@@ -74,6 +74,9 @@ int main(){
     printf("%d \n", getFromQueue(fifo));
     printf("%d \n", getFromQueue(fifo));
     printf("%d \n", getFromQueue(fifo));
+    addToQueue(7, fifo);
+    addToQueue(9, fifo);
+    addToQueue(11, fifo);
     printf("%d \n", getFromQueue(fifo));
 
     return 0;
